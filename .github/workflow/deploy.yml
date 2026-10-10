@@ -1,14 +1,14 @@
-  name: Deploy react
-  on:
-    push:
-      branches:
-        - master
+name: Deploy react
+on:
+  push:
+    branches:
+      - main   # change to master if that's your branch
 
-  jobs:
-    builds:
-      runs-on: ubuntu-latest
-      steps:
-        -  uses: actions/checkout@v2
-        -  run: docer login -u ${{ secrets.DOCKER_USERNAME }} -P ${{ secrets.Docker_PASSWORD}}
-        -  run: docker build -t ouda/react-test -f dockerfile.dev .
-        -  run: dokcer run -e CI=true ouda/react-test npm run test 
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - run: docker build -t ouda/react-test -f Dockerfile.dev .
+      - run: docker run -e CI=true ouda/react-test npm run test
