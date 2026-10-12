@@ -21,15 +21,15 @@ jobs:
         run: docker run -e CI=true ouda/react-test npm run test
 
       - name: Generate deployment package
-        run: zip -r deploy.zip . -x '*.git*'
+        run: zip -r deploy.zip . -x '*.git*' 'node_modules/*'
 
       - name: Deploy to EB
         uses: einaregilsson/beanstalk-deploy@v22
         with:
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application_name: devapp
-          environment_name: Devapp-env
+          application_name: react-project
+          environment_name: React-project-env
           version_label: ${{ github.sha }}
-          region: us-east-1
+          region: eu-north-1
           deployment_package: deploy.zip
